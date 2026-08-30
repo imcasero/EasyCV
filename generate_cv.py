@@ -102,6 +102,7 @@ def load_data(yaml_path):
         raise ValueError(f"{yaml_path}: expected a root key 'cv'.")
     cv = data["cv"] or {}
     cv.setdefault("sections", {})
+    cv.setdefault("show_duration", False)
     return cv
 
 

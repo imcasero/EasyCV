@@ -51,6 +51,7 @@ Everything hangs off a `cv` root key. Any missing field or section is skipped.
 
 ```yaml
 cv:
+  show_duration: false        # optional, defaults to false either way
   name: "Diego Casero Martín"
   headline: "Frontend Developer"
   location: "Madrid area, Spain"

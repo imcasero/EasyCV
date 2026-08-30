@@ -196,8 +196,10 @@
           {%- set chunks = [] -%}
           {%- if job.location %}{% set _ = chunks.append(job.location) %}{% endif -%}
           {%- if job.start_date %}{% set _ = chunks.append(job.start_date | format_date ~ (' – ' ~ (job.end_date | format_date) if job.end_date else '')) %}{% endif -%}
+          {%- if cv.show_duration -%}
           {%- set span = job.start_date | duration(job.end_date) -%}
           {%- if span %}{% set _ = chunks.append(span) %}{% endif -%}
+          {%- endif -%}
           {{ chunks | join(' · ') }}
         </p>
         {% if job.highlights %}
@@ -219,8 +221,10 @@
           <p class="meta">
             {%- set chunks = [] -%}
             {%- if role.start_date %}{% set _ = chunks.append(role.start_date | format_date ~ (' – ' ~ (role.end_date | format_date) if role.end_date else '')) %}{% endif -%}
+            {%- if cv.show_duration -%}
             {%- set span = role.start_date | duration(role.end_date) -%}
             {%- if span %}{% set _ = chunks.append(span) %}{% endif -%}
+            {%- endif -%}
             {{ chunks | join(' · ') }}
           </p>
           {% if role.highlights %}

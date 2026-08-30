@@ -20,6 +20,26 @@ Rules that apply everywhere:
 
 ---
 
+## Display options
+
+Top-level, boolean fields hanging directly off `cv`. They don't map to a piece
+of content — they toggle how other fields render.
+
+| Field | Type | Default | What it does |
+| --- | --- | --- | --- |
+| `show_duration` | boolean | `false` | Show the computed duration (`1 year 4 months`) next to each experience role's dates |
+
+```yaml
+cv:
+  show_duration: true
+```
+
+If omitted, or set to any falsy value, durations are computed but never
+printed — the dates themselves (`start_date`/`end_date`) still show either way.
+See *Duration* under [Dates](#dates) for how the number itself is computed.
+
+---
+
 ## Header
 
 Top-level fields hanging directly off `cv`. Rendered centered.
@@ -147,7 +167,7 @@ Example:
     - "First achievement"
 ```
 
-Renders:
+Renders (with [`show_duration: true`](#display-options); it's `false` by default):
 
 ```
 Globant, Frontend Developer
@@ -200,7 +220,7 @@ Example:
         - "Built internal tools serving 5,000+ daily users"
 ```
 
-Renders:
+Renders (with [`show_duration: true`](#display-options); it's `false` by default):
 
 ```
 CaixaBank Tech
@@ -214,6 +234,9 @@ Frontend Developer
 Nov 2024 – Jul 2026 · 1 year 9 months
   • Built internal tools serving 5,000+ daily users
 ```
+
+With the default `show_duration: false`, each role's line is just the dates,
+e.g. `Jul 2026 – present`.
 
 Unlike the flat shape, an entry with `positions` **can** split across a page
 break — but only between two roles, never in the middle of one role's bullets.
@@ -306,8 +329,9 @@ In YAML, always quote them. Unquoted, `2024-11-15` is read as a native date and
 
 ### Duration (`experience` only)
 
-Computed from `start_date` and `end_date`, and it is **inclusive** — it counts
-both the start and the end month.
+Only printed when [`show_duration`](#display-options) is `true` — it defaults
+to hidden. Computed from `start_date` and `end_date` either way, and it is
+**inclusive** — it counts both the start and the end month.
 
 ```
 Aug 2023 – Nov 2024  →  16 months  →  "1 year 4 months"
