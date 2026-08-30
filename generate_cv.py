@@ -95,6 +95,44 @@ def network_icon(network):
     )
 
 
+NETWORK_URL_TEMPLATES = {
+    "linkedin": "https://linkedin.com/in/{u}",
+    "github": "https://github.com/{u}",
+    "gitlab": "https://gitlab.com/{u}",
+    "twitter": "https://twitter.com/{u}",
+    "x": "https://x.com/{u}",
+    "stackoverflow": "https://stackoverflow.com/users/{u}",
+}
+
+
+def ensure_scheme(url):
+    """Prefix 'https://' onto a bare domain if no scheme is already present."""
+    text = str(url or "").strip()
+    if not text or "://" in text:
+        return text
+    return f"https://{text}"
+
+
+def network_url(network, username):
+    """Full clickable URL for a social_networks entry.
+
+    If `username` already looks like a domain/path (contains '.' or '/'),
+    it is treated as already complete and only gets a scheme prefix. Otherwise
+    it is expanded via the known network's URL template.
+    """
+    text = str(username or "").strip()
+    if not text:
+        return ""
+    if "://" in text:
+        return text
+    if "." in text or "/" in text:
+        return ensure_scheme(text)
+    key = (network or "").strip().lower()
+    if key in NETWORK_URL_TEMPLATES:
+        return NETWORK_URL_TEMPLATES[key].format(u=text)
+    return ensure_scheme(text)
+
+
 def load_data(yaml_path):
     with open(yaml_path, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
@@ -116,6 +154,8 @@ def render_html(cv):
     env.filters["format_date"] = format_date
     env.filters["duration"] = duration
     env.filters["icon"] = network_icon
+    env.filters["ensure_scheme"] = ensure_scheme
+    env.filters["network_url"] = network_url
     return env.get_template(TEMPLATE_NAME).render(cv=cv)
 
 

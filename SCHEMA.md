@@ -67,12 +67,14 @@ location · phone · email · website · social_networks (in list order)
 
 ### `website`
 
-Only the `https://` and `http://` prefixes are stripped. Nothing else — a
-trailing slash **is kept**.
+Displayed text has the `https://` and `http://` prefixes stripped — nothing
+else, a trailing slash **is kept**. The full value (with a `https://` prefix
+added back if you omitted it) becomes a real clickable link in the PDF.
 
 ```yaml
-website: "https://imcasero.dev"     # renders  imcasero.dev
-website: "https://imcasero.dev/"    # renders  imcasero.dev/
+website: "https://imcasero.dev"     # renders  imcasero.dev  → links to https://imcasero.dev
+website: "https://imcasero.dev/"    # renders  imcasero.dev/ → links to https://imcasero.dev/
+website: "imcasero.dev"             # renders  imcasero.dev  → links to https://imcasero.dev
 ```
 
 ### `social_networks`
@@ -81,8 +83,8 @@ A list of maps with two keys:
 
 | Key | What it does |
 | --- | --- |
-| `network` | **Only picks the icon. It is never printed anywhere** |
-| `username` | The text that shows, exactly as you write it |
+| `network` | Picks the icon, **and** which URL template builds the link. Never printed as text |
+| `username` | The text that shows, exactly as you write it. Also becomes a real clickable link |
 
 ```yaml
 social_networks:
@@ -92,17 +94,32 @@ social_networks:
     username: "imcasero"
 ```
 
-Renders: `[LinkedIn icon] imcasero  [GitHub icon] imcasero`
+Renders: `[LinkedIn icon] imcasero  [GitHub icon] imcasero`, the first linking
+to `https://linkedin.com/in/imcasero` and the second to
+`https://github.com/imcasero`.
 
 Icons with real artwork: `LinkedIn` and `GitHub` (case-insensitive). Any other
 `network` value falls back to the generic link icon — including `GitLab`,
 `Twitter` and `X`, which the script's icon-picking helper recognises but the
-template does not draw yet.
+template does not draw an icon for yet; the link itself still resolves
+correctly for those three plus `stackoverflow`.
 
-Because `network` is never printed, an ATS extracting text sees those two
-entries as `imcasero imcasero`, with nothing identifying them. This is the
-trade-off described in the README. If it matters to you, put the full handle in
-`username`:
+**How the link is built**, in order:
+
+1. If `username` already contains `://`, it is used as the link exactly as
+   written.
+2. Else if `username` contains a `.` or a `/` (it looks like a domain or
+   path already), it's used as-is with `https://` prepended.
+3. Else, for a known `network` (`linkedin`, `github`, `gitlab`, `twitter`, `x`,
+   `stackoverflow`), `username` is expanded into that network's profile URL
+   template (`https://linkedin.com/in/{username}`, etc.).
+4. Otherwise, `username` gets a bare `https://` prepended.
+
+Because `network` is never printed as text, an ATS extracting text sees those
+two entries as `imcasero imcasero`, with nothing identifying them — the
+trade-off described in the README. If that matters to you, put the full handle
+in `username` instead of a bare username; per rule 2 above, it still resolves
+to the right link:
 
 ```yaml
   - network: LinkedIn

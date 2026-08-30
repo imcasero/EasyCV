@@ -140,8 +140,12 @@ autofill from this PDF, start here:
 
 1. **Icons instead of text labels.** Contact details use icons, so in the
    extracted text LinkedIn and GitHub come out as bare `imcasero`, with no word
-   identifying the network. To revert, replace the `{{ icon(...) }}` calls in
-   the `.contact` block of `templates/cv.html` with plain text (`LinkedIn:`,
+   identifying the network. They are real clickable links in the PDF (pointing
+   to `linkedin.com/in/imcasero`, `github.com/imcasero`, etc. — see
+   [SCHEMA.md](SCHEMA.md#social_networks)), which softens this a little for a
+   human opening the file, but the extracted plain text still has no label. To
+   revert to text labels, replace the `{{ icon(...) }}` calls in the
+   `.contact` block of `templates/cv.html` with plain text (`LinkedIn:`,
    `GitHub:`, `Email:`).
 2. **The section rule spans the full width** under the heading, instead of
    starting right after the word. The visually "correct" version needs
