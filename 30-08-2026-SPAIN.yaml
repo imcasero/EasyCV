@@ -1,0 +1,82 @@
+cv:
+  name: "Diego Casero Martín"
+  headline: "Frontend Developer"
+  location: "Madrid area, Spain"
+  email: "diegocaserosmr@gmail.com"
+  website: "https://imcasero.dev"
+  social_networks:
+    - network: LinkedIn
+      username: "imcasero"
+    - network: GitHub
+      username: "imcasero"
+
+  sections:
+    summary:
+    - "Frontend Developer with 3 years of experience building scalable React applications, currently leading a small frontend team. Hands-on experience with microfrontend architectures (Web Components, iframe-based isolation) and modern tooling (Vite, Docker, monorepos). Automated a critical internal workflow, cutting processing time by 94%, and co-designed a proposed Angular-to-React migration architecture."
+
+
+    experience:
+      - company: "CaixaBank Tech"
+        position: "Frontend Squad Lead (from Jul 2026) / Frontend Developer"
+        location: "Madrid, Spain"
+        start_date: "2024-11"
+        end_date: "present"
+        highlights:
+          - "Frontend Squad Lead for a 3-person team — primary point of contact with QA and Backend, leading weekly reporting syncs and resolving cross-team friction points, with final say on technical and organizational decisions"
+          - "Built internal tools serving 5,000+ daily users, including complex forms with dependent field logic and multi-step validation, using React, Formik and Jest"
+          - "Reduced application onboarding process time by 94% (from 3 months to 5 days) by automating a previously bureaucratic manual process"
+          - "Worked within a microfrontend architecture and custom component library, consuming internal operational APIs (including Kubernetes pod management endpoints)"
+          - "Established testing patterns for complex form validation logic"
+          - "Introduced retrospectives, more dynamic daily standups, and structured story-point estimation, driving Agile adoption within the team"
+      - company: "Globant"
+        position: "Frontend Developer"
+        location: "Madrid, Spain"
+        start_date: "2023-08"
+        end_date: "2024-11"
+        highlights:
+          - "Built the company's first React web component and reusable component library, growing from junior to the team's React reference — regularly consulted by the Product Owner on React decisions"
+          - "Drove a 30% reduction in production bugs through systematic clean code practices and improved test coverage"
+          - "Co-designed a proposed Angular-to-React migration architecture (with another developer), researching and adapting hexagonal architecture patterns to frontend use cases as part of the plan"
+          - "Contributed to and defended the decision to build shared UI as Web Components, working alongside a product architect on the final design"
+          - "Served as the team's frontend point of contact for CI/CD, advising on React build configuration and Node versions while collaborating with the cloud team on the AWS (S3/CloudFront) deployment pipeline"
+          - "Supported the GitLab-to-GitHub migration by auditing code quality via CodeScene and resolving migration blockers"
+      - company: "Inetum"
+        position: "Fullstack Developer Intern"
+        location: "Madrid, Spain"
+        start_date: "2023-04"
+        end_date: "2023-06"
+        highlights:
+          - "Identified and led a landing page redesign initiative, producing Figma wireframes and implementing the full redesign in HTML, CSS, JavaScript, and Bootstrap"
+          - "Maintained legacy .NET backend systems (VB/C#), resolving data integrity issues and improving API response times"
+          - "Worked independently across design, frontend, and backend tasks with minimal supervision"
+
+    education:
+      - institution: "IES Domenico Scarlatti"
+        area: "Software & Web Development"
+        degree: "VET"
+        location: "Aranjuez, Spain"
+        start_date: "2021-09"
+        end_date: "2023-04"
+      - institution: "IES La Cañuela"
+        area: "Microcomputer Systems"
+        degree: "VET"
+        location: "Yuncos, Spain"
+        start_date: "2019-09"
+        end_date: "2021-04"
+
+    skills:
+      - label: "Frontend Development"
+        details: "TypeScript, JavaScript (ES6+), React, Next.js, Angular, Vite, React Query, Formik, Tailwind CSS, SASS, CSS Modules, Microfrontends (Web Components, iframes), Responsive Design"
+      - label: "Testing & Quality"
+        details: "Jest, Vitest, Jasmine, React Testing Library, Unit Testing, Integration Testing, ESLint, Prettier, Code Reviews"
+      - label: "Backend & DevOps"
+        details: "Node.js, NestJS, PostgreSQL, CI/CD, AWS (S3, CloudFront), Docker, Monorepos, Git, GitHub, GitLab"
+      - label: "Methodologies"
+        details: "Agile, Scrum, Kanban"
+      - label: "Languages"
+        details: "Spanish (Native), English (Intermediate — B1/B2, professional working proficiency)"
+
+    additional_information:
+      - bullet: "EU Citizen (Spanish Passport)"
+      - bullet: "Open to hybrid and remote work arrangements"
+      - bullet: "Active in continuous learning through personal projects and open source exploration"
