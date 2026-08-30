@@ -110,7 +110,15 @@ Heading rendered: **Summary**
 
 ### `experience`
 
-A list of maps. Each entry renders a block that never splits across pages.
+A list of maps, one per company. Each entry can be **flat** (a single role at
+that company) or hold a **`positions` list** (several roles at the same
+company — promotions, internal moves). The two shapes are mutually exclusive:
+if `positions` is present, `position`, `start_date`, `end_date` and
+`highlights` on the entry itself are ignored.
+
+#### Flat shape (single role)
+
+A flat entry renders a block that never splits across pages.
 
 | Field | Required | What it renders |
 | --- | --- | --- |
@@ -121,7 +129,7 @@ A list of maps. Each entry renders a block that never splits across pages.
 | `end_date` | No | Joined to `start_date` with an en dash |
 | `highlights` | No | List of justified bullets |
 
-The second line joins with ` · ` only the chunks that exist:
+The metadata line joins with ` · ` only the chunks that exist:
 
 ```
 location · start_date – end_date · duration
@@ -130,11 +138,11 @@ location · start_date – end_date · duration
 Example:
 
 ```yaml
-- company: "CaixaBank Tech"
-  position: "Frontend Squad Lead"
+- company: "Globant"
+  position: "Frontend Developer"
   location: "Madrid, Spain"
-  start_date: "2024-11"
-  end_date: "present"
+  start_date: "2023-08"
+  end_date: "2024-11"
   highlights:
     - "First achievement"
 ```
@@ -142,14 +150,75 @@ Example:
 Renders:
 
 ```
-CaixaBank Tech, Frontend Squad Lead
-Madrid, Spain · Nov 2024 – present · 1 year 10 months
+Globant, Frontend Developer
+Madrid, Spain · Aug 2023 – Nov 2024 · 1 year 4 months
   • First achievement
 ```
 
-Drop `position` and the line is just `CaixaBank Tech` in bold. Drop `end_date`
-and only the start date shows — **the duration disappears**, since it cannot be
+Drop `position` and the line is just `Globant` in bold. Drop `end_date` and
+only the start date shows — **the duration disappears**, since it cannot be
 computed without an end date.
+
+#### `positions` shape (multiple roles, same company)
+
+| Field | Required | What it renders |
+| --- | --- | --- |
+| `company` | Yes in practice | Company line, in **bold**, printed once |
+| `location` | No | Printed once, right under the company line |
+| `positions` | Yes (to use this shape) | One block per role, in the order listed |
+
+Each item inside `positions` is its own map:
+
+| Field | Required | What it renders |
+| --- | --- | --- |
+| `title` | No | Role name, in *italics* |
+| `start_date` | No | First chunk of that role's metadata line |
+| `end_date` | No | Joined to `start_date` with an en dash |
+| `highlights` | No | List of justified bullets, scoped to that role |
+
+A role's metadata line is just `start_date – end_date · duration` — `location`
+does not repeat per role, since it is shared and already printed once above.
+
+List `positions` most-recent-first, the same convention as everything else in
+`experience`.
+
+Example:
+
+```yaml
+- company: "CaixaBank Tech"
+  location: "Madrid, Spain"
+  positions:
+    - title: "Frontend Squad Lead"
+      start_date: "2026-07"
+      end_date: "present"
+      highlights:
+        - "Leading a 3-person team"
+    - title: "Frontend Developer"
+      start_date: "2024-11"
+      end_date: "2026-07"
+      highlights:
+        - "Built internal tools serving 5,000+ daily users"
+```
+
+Renders:
+
+```
+CaixaBank Tech
+Madrid, Spain
+
+Frontend Squad Lead
+Jul 2026 – present · 2 months
+  • Leading a 3-person team
+
+Frontend Developer
+Nov 2024 – Jul 2026 · 1 year 9 months
+  • Built internal tools serving 5,000+ daily users
+```
+
+Unlike the flat shape, an entry with `positions` **can** split across a page
+break — but only between two roles, never in the middle of one role's bullets.
+With a long list of roles at one company, this is the trade-off that keeps a
+single company from being pushed whole onto a fresh page.
 
 Heading rendered: **Experience**
 

@@ -17,17 +17,22 @@ cv:
 
     experience:
       - company: "CaixaBank Tech"
-        position: "Frontend Squad Lead (from Jul 2026) / Frontend Developer"
         location: "Madrid, Spain"
-        start_date: "2024-11"
-        end_date: "present"
-        highlights:
-          - "Frontend Squad Lead for a 3-person team — primary point of contact with QA and Backend, leading weekly reporting syncs and resolving cross-team friction points, with final say on technical and organizational decisions"
-          - "Built internal tools serving 5,000+ daily users, including complex forms with dependent field logic and multi-step validation, using React, Formik and Jest"
-          - "Reduced application onboarding process time by 94% (from 3 months to 5 days) by automating a previously bureaucratic manual process"
-          - "Worked within a microfrontend architecture and custom component library, consuming internal operational APIs (including Kubernetes pod management endpoints)"
-          - "Established testing patterns for complex form validation logic"
-          - "Introduced retrospectives, more dynamic daily standups, and structured story-point estimation, driving Agile adoption within the team"
+        positions:
+          - title: "Frontend Squad Lead"
+            start_date: "2026-07"
+            end_date: "present"
+            highlights:
+              - "Frontend Squad Lead for a 3-person team — primary point of contact with QA and Backend, leading weekly reporting syncs and resolving cross-team friction points, with final say on technical and organizational decisions"
+              - "Introduced retrospectives, more dynamic daily standups, and structured story-point estimation, driving Agile adoption within the team"
+          - title: "Frontend Developer"
+            start_date: "2024-11"
+            end_date: "2026-07"
+            highlights:
+              - "Built internal tools serving 5,000+ daily users, including complex forms with dependent field logic and multi-step validation, using React, Formik and Jest"
+              - "Reduced application onboarding process time by 94% (from 3 months to 5 days) by automating a previously bureaucratic manual process"
+              - "Worked within a microfrontend architecture and custom component library, consuming internal operational APIs (including Kubernetes pod management endpoints)"
+              - "Established testing patterns for complex form validation logic"
       - company: "Globant"
         position: "Frontend Developer"
         location: "Madrid, Spain"

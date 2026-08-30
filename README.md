@@ -30,7 +30,7 @@ export anything by hand.
 ## Usage
 
 ```bash
-.venv/bin/python generar_cv.py 30-08-2026-SPAIN.yaml cv.pdf
+.venv/bin/python generate_cv.py 30-08-2026-SPAIN.yaml cv.pdf
 ```
 
 Two arguments, both required: input YAML and output PDF.
@@ -39,7 +39,7 @@ Two arguments, both required: input YAML and output PDF.
 
 | File | Purpose |
 | --- | --- |
-| `generar_cv.py` | Loads the YAML, registers the Jinja2 filters, renders and writes the PDF |
+| `generate_cv.py` | Loads the YAML, registers the Jinja2 filters, renders and writes the PDF |
 | `templates/cv.html` | Template and CSS. Everything visual lives here |
 | `SCHEMA.md` | Full data schema reference |
 | `requirements.txt` | PyYAML, Jinja2, weasyprint |
@@ -64,11 +64,24 @@ cv:
     summary:
       - "Frontend Developer with..."
     experience:
-      - company: "CaixaBank Tech"
-        position: "Frontend Squad Lead"
+      - company: "CaixaBank Tech"       # multiple roles at the same company
         location: "Madrid, Spain"
-        start_date: "2024-11"
-        end_date: "present"
+        positions:
+          - title: "Frontend Squad Lead"
+            start_date: "2026-07"
+            end_date: "present"
+            highlights:
+              - "..."
+          - title: "Frontend Developer"
+            start_date: "2024-11"
+            end_date: "2026-07"
+            highlights:
+              - "..."
+      - company: "Globant"              # a single role: no `positions` needed
+        position: "Frontend Developer"
+        location: "Madrid, Spain"
+        start_date: "2023-08"
+        end_date: "2024-11"
         highlights:
           - "..."
     education:
@@ -95,9 +108,9 @@ duration, and the edge cases.
 
 | Filter | Example | Result |
 | --- | --- | --- |
-| `fecha` | `"2024-11" \| fecha` | `Nov 2024` |
-| `duracion` | `"2023-08" \| duracion("2024-11")` | `1 year 4 months` |
-| `icono` | `"LinkedIn" \| icono` | `linkedin` (SVG icon name) |
+| `format_date` | `"2024-11" \| format_date` | `Nov 2024` |
+| `duration` | `"2023-08" \| duration("2024-11")` | `1 year 4 months` |
+| `icon` | `"LinkedIn" \| icon` | `linkedin` (SVG icon name) |
 
 ## ATS design decisions
 
@@ -115,7 +128,9 @@ What makes the PDF parseable, and why it is built this way:
   Additional Information.
 - **Controlled page breaks** via `break-inside: avoid` per entry and
   `break-after: avoid` on headings, so a heading never strands at the bottom of
-  a page.
+  a page. A company with multiple `positions` is the one exception: the page
+  can break between two roles, just never inside one role's bullets — see
+  [SCHEMA.md](SCHEMA.md#positions-shape-multiple-roles-same-company).
 
 ### Known trade-offs
 
@@ -124,8 +139,8 @@ autofill from this PDF, start here:
 
 1. **Icons instead of text labels.** Contact details use icons, so in the
    extracted text LinkedIn and GitHub come out as bare `imcasero`, with no word
-   identifying the network. To revert, replace the `{{ icono(...) }}` calls in
-   the `.contacto` block of `templates/cv.html` with plain text (`LinkedIn:`,
+   identifying the network. To revert, replace the `{{ icon(...) }}` calls in
+   the `.contact` block of `templates/cv.html` with plain text (`LinkedIn:`,
    `GitHub:`, `Email:`).
 2. **The section rule spans the full width** under the heading, instead of
    starting right after the word. The visually "correct" version needs
@@ -154,7 +169,7 @@ sips -s format png cv.pdf --out preview.png
 ## Customising
 
 Everything visual is in the `<style>` block of `templates/cv.html`: page margins
-in `@page`, sizes in `body`/`h1`/`h2`, spacing between roles in `.entrada`. The
-SVG icons live in the `icono()` macro at the top of the body; to add a new
+in `@page`, sizes in `body`/`h1`/`h2`, spacing between roles in `.entry`. The
+SVG icons live in the `icon()` macro at the top of the body; to add a new
 network, add its branch to the macro and its name to the icon-picking helper in
-`generar_cv.py`.
+`generate_cv.py`.

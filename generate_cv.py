@@ -112,9 +112,9 @@ def render_html(cv):
         trim_blocks=True,
         lstrip_blocks=True,
     )
-    env.filters["fecha"] = format_date
-    env.filters["duracion"] = duration
-    env.filters["icono"] = network_icon
+    env.filters["format_date"] = format_date
+    env.filters["duration"] = duration
+    env.filters["icon"] = network_icon
     return env.get_template(TEMPLATE_NAME).render(cv=cv)
 
 
