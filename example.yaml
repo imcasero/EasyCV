@@ -10,9 +10,12 @@ cv:
     - network: GitHub
       username: "imcasero"
 
+  show_footer: true
+  last_updated_date: "August 2026"
+
   sections:
     summary:
-    - "Frontend Developer with 3 years of experience building scalable React applications, currently leading a small frontend team. Hands-on experience with microfrontend architectures (Web Components, iframe-based isolation) and modern tooling (Vite, Docker, monorepos). Automated a critical internal workflow, cutting processing time by 94%, and co-designed a proposed Angular-to-React migration architecture."
+    - "Frontend Developer with 3 years of experience building scalable React applications, currently leading a small frontend team. Hands-on experience with microfrontend architectures (Web Components, iframe-based isolation) and modern tooling (Vite, Docker, monorepos). Automated a critical internal workflow, **cutting processing time by 94%**, and co-designed a proposed Angular-to-React migration architecture."
 
 
     experience:
@@ -23,14 +26,14 @@ cv:
             start_date: "2026-07"
             end_date: "present"
             highlights:
-              - "Frontend Squad Lead for a 3-person team — primary point of contact with QA and Backend, leading weekly reporting syncs and resolving cross-team friction points, with final say on technical and organizational decisions"
+              - "Frontend Squad Lead for a **3-person team** — primary point of contact with QA and Backend, leading weekly reporting syncs and resolving cross-team friction points, with final say on technical and organizational decisions"
               - "Introduced retrospectives, more dynamic daily standups, and structured story-point estimation, driving Agile adoption within the team"
           - title: "Frontend Developer"
             start_date: "2024-11"
             end_date: "2026-07"
             highlights:
-              - "Built internal tools serving 5,000+ daily users, including complex forms with dependent field logic and multi-step validation, using React, Formik and Jest"
-              - "Reduced application onboarding process time by 94% (from 3 months to 5 days) by automating a previously bureaucratic manual process"
+              - "Built internal tools serving **5,000+ daily users**, including complex forms with dependent field logic and multi-step validation, using React, Formik and Jest"
+              - "Reduced application onboarding process time by **94% (from 3 months to 5 days)** by automating a previously bureaucratic manual process"
               - "Worked within a microfrontend architecture and custom component library, consuming internal operational APIs (including Kubernetes pod management endpoints)"
               - "Established testing patterns for complex form validation logic"
       - company: "Globant"
@@ -40,7 +43,7 @@ cv:
         end_date: "2024-11"
         highlights:
           - "Built the company's first React web component and reusable component library, growing from junior to the team's React reference — regularly consulted by the Product Owner on React decisions"
-          - "Drove a 30% reduction in production bugs through systematic clean code practices and improved test coverage"
+          - "Drove a **30% reduction in production bugs** through systematic clean code practices and improved test coverage"
           - "Co-designed a proposed Angular-to-React migration architecture (with another developer), researching and adapting hexagonal architecture patterns to frontend use cases as part of the plan"
           - "Contributed to and defended the decision to build shared UI as Web Components, working alongside a product architect on the final design"
           - "Served as the team's frontend point of contact for CI/CD, advising on React build configuration and Node versions while collaborating with the cloud team on the AWS (S3/CloudFront) deployment pipeline"

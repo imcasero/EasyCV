@@ -2,10 +2,11 @@
 """Transform YAML data to a PDF CV.
 
 Usage:
-    python generar_cv.py cv.yaml cv.pdf
+    python generate_cv.py cv/my-cv.yaml cv/my-cv.pdf
 """
 
 import os
+import re
 import sys
 from datetime import date
 from pathlib import Path
@@ -21,6 +22,7 @@ if sys.platform == "darwin":
 
 import yaml
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+from markupsafe import Markup, escape
 from weasyprint import HTML
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -133,6 +135,38 @@ def network_url(network, username):
     return ensure_scheme(text)
 
 
+_MD_LINK = re.compile(r"\[([^\]]+)\]\(([^)\s]+)\)")
+_MD_BOLD = re.compile(r"\*\*(.+?)\*\*")
+_MD_ITALIC = re.compile(r"(?<![\w*])\*(?!\s)(.+?)(?<!\s)\*(?![\w*])")
+_MD_BOLD_U = re.compile(r"(?<![\w_])__(?!\s)(.+?)(?<!\s)__(?![\w_])")
+_MD_ITALIC_U = re.compile(r"(?<![\w_])_(?!\s)(.+?)(?<!\s)_(?![\w_])")
+_MD_CODE = re.compile(r"`([^`]+)`")
+
+
+def markdown(value):
+    """Render a safe subset of inline Markdown: **bold**, *italic*, `code`,
+    [text](url). Everything else is HTML-escaped. Returns Markup so Jinja's
+    autoescape leaves the generated tags alone.
+
+    Links become real clickable links styled as plain text (same treatment as
+    the contact line), so an em-dash of visual noise never lands in the PDF.
+    """
+    if value is None:
+        return Markup("")
+    text = str(escape(value))
+    text = _MD_LINK.sub(
+        lambda m: f'<a class="md-link" href="{escape(ensure_scheme(m.group(2)))}">'
+        f"{m.group(1)}</a>",
+        text,
+    )
+    text = _MD_BOLD.sub(r"<strong>\1</strong>", text)
+    text = _MD_BOLD_U.sub(r"<strong>\1</strong>", text)
+    text = _MD_ITALIC.sub(r"<em>\1</em>", text)
+    text = _MD_ITALIC_U.sub(r"<em>\1</em>", text)
+    text = _MD_CODE.sub(r"<code>\1</code>", text)
+    return Markup(text)
+
+
 def load_data(yaml_path):
     with open(yaml_path, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
@@ -141,6 +175,7 @@ def load_data(yaml_path):
     cv = data["cv"] or {}
     cv.setdefault("sections", {})
     cv.setdefault("show_duration", False)
+    cv.setdefault("show_footer", True)
     return cv
 
 
@@ -153,6 +188,7 @@ def render_html(cv):
     )
     env.filters["format_date"] = format_date
     env.filters["duration"] = duration
+    env.filters["markdown"] = markdown
     env.filters["icon"] = network_icon
     env.filters["ensure_scheme"] = ensure_scheme
     env.filters["network_url"] = network_url

@@ -28,10 +28,14 @@ of content — they toggle how other fields render.
 | Field | Type | Default | What it does |
 | --- | --- | --- | --- |
 | `show_duration` | boolean | `false` | Show the computed duration (`1 year 4 months`) next to each experience role's dates |
+| `show_footer` | boolean | `true` | Print a page footer: `name` bottom-left, `Page N of M` bottom-right |
+| `last_updated_date` | string | — | When set (and `show_footer` is on), also prints `Last updated <value>` bottom-center. Free text, printed verbatim |
 
 ```yaml
 cv:
   show_duration: true
+  show_footer: true
+  last_updated_date: "August 2026"
 ```
 
 If omitted, or set to any falsy value, durations are computed but never
@@ -49,7 +53,7 @@ Top-level fields hanging directly off `cv`. Rendered centered.
 | `name` | **Yes** | Large bold title (24pt). Also the PDF document title |
 | `headline` | No | Line below the name, regular size |
 | `location` | No | Contact item with a map-pin icon |
-| `phone` | No | Contact item with the generic link icon |
+| `phone` | No | Contact item with a phone-handset icon |
 | `email` | No | Contact item with an envelope icon |
 | `website` | No | Contact item with a link icon |
 | `social_networks` | No | One contact item per list entry |
@@ -326,6 +330,29 @@ additional_information:
 ```
 
 Renders a bullet list. Heading rendered: **Additional Information**
+
+---
+
+## Inline Markdown
+
+A small subset of Markdown is rendered inside these text fields:
+
+- `summary` paragraphs
+- `experience` → `highlights` (both the flat and the `positions` shapes)
+- `skills` → `details`
+- `additional_information` → `bullet`
+
+| You write | You get |
+| --- | --- |
+| `**text**` or `__text__` | **bold** |
+| `*text*` or `_text_` | *italic* |
+| `` `text` `` | monospace |
+| `[label](https://url)` | `label` as a real clickable link, styled as plain text (a bare domain gets `https://` prepended) |
+
+Everything else is HTML-escaped and printed literally, so `<`, `&`, stray `*`
+and intra-word `snake_case` underscores are safe. Every other field
+(`name`, `headline`, `company`, `title`, dates, …) is plain text — Markdown
+there is printed verbatim.
 
 ---
 

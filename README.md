@@ -30,20 +30,38 @@ export anything by hand.
 ## Usage
 
 ```bash
-.venv/bin/python generate_cv.py 30-08-2026-SPAIN.yaml cv.pdf
+.venv/bin/python generate_cv.py cv/my-cv.yaml cv/my-cv.pdf
 ```
 
-Two arguments, both required: input YAML and output PDF.
+Two arguments, both required: input YAML and output PDF. The script has no
+hard-coded paths — point it at any file.
+
+## Your CVs live in `cv/`
+
+The `cv/` directory is git-ignored (only a `.gitkeep` is tracked), so your
+actual CV data and generated PDFs never get committed. This keeps the repo
+clean for forks: clone it, drop your own YAML files in `cv/`, and your data
+stays local.
+
+```bash
+cp example.yaml cv/2026-my-cv.yaml       # start from the example
+$EDITOR cv/2026-my-cv.yaml               # fill in your data
+.venv/bin/python generate_cv.py cv/2026-my-cv.yaml cv/2026-my-cv.pdf
+```
+
+`*.pdf` is git-ignored everywhere too, so a PDF built at the repo root is also
+never committed.
 
 ## Files
 
-| File | Purpose |
+| Path | Purpose |
 | --- | --- |
 | `generate_cv.py` | Loads the YAML, registers the Jinja2 filters, renders and writes the PDF |
 | `templates/cv.html` | Template and CSS. Everything visual lives here |
 | `SCHEMA.md` | Full data schema reference |
-| `requirements.txt` | PyYAML, Jinja2, weasyprint |
-| `30-08-2026-SPAIN.yaml` | Sample / real CV data |
+| `requirements.txt` | PyYAML, Jinja2, MarkupSafe, weasyprint |
+| `example.yaml` | Starting-point CV data, exercising every field and feature |
+| `cv/` | Git-ignored. Your own YAML files and generated PDFs go here |
 
 ## Data at a glance
 
@@ -112,6 +130,7 @@ duration, and the edge cases.
 | `format_date` | `"2024-11" \| format_date` | `Nov 2024` |
 | `duration` | `"2023-08" \| duration("2024-11")` | `1 year 4 months` |
 | `icon` | `"LinkedIn" \| icon` | `linkedin` (SVG icon name) |
+| `markdown` | `"Cut time by **94%**" \| markdown` | `Cut time by <strong>94%</strong>` (safe subset: bold, italic, code, links) |
 
 ## ATS design decisions
 
@@ -127,6 +146,11 @@ What makes the PDF parseable, and why it is built this way:
 - **Web-safe typography:** Arial/Helvetica.
 - **Standard section headings:** Summary, Experience, Education, Skills,
   Additional Information.
+- **Footer** (`name` + `Page N of M`) sits in the page margin box, so it never
+  interleaves with the body text an ATS extracts. Toggle with `show_footer`.
+- **Inline Markdown** in highlights/summary/skills is limited to bold, italic,
+  code and links — no headings, images or block elements that would disturb the
+  reading order. See [SCHEMA.md](SCHEMA.md#inline-markdown).
 - **Controlled page breaks** via `break-inside: avoid` per entry and
   `break-after: avoid` on headings, so a heading never strands at the bottom of
   a page. A company with multiple `positions` is the one exception: the page
@@ -161,14 +185,14 @@ Checking that the text comes out in a coherent order, which is the whole point:
 .venv/bin/pip install pypdf
 .venv/bin/python -c "
 from pypdf import PdfReader
-for i, p in enumerate(PdfReader('cv.pdf').pages):
+for i, p in enumerate(PdfReader('cv/my-cv.pdf').pages):
     print(f'--- page {i+1} ---'); print(p.extract_text())"
 ```
 
 Image preview (macOS, first page only):
 
 ```bash
-sips -s format png cv.pdf --out preview.png
+sips -s format png cv/my-cv.pdf --out preview.png
 ```
 
 ## Customising
